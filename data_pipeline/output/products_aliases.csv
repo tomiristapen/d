@@ -1,0 +1,225 @@
+product_name,alias,alias_normalized,alias_type
+all-purpose flour,all-purpose flour,all-purpose flour,canonical
+all-purpose flour,flour,flour,derived
+all-purpose flour,"flour, wheat, all-purpose, enriched, bleached","flour, wheat, all-purpose, enriched, bleached",source_name
+all-purpose flour,"flour, wheat, all-purpose, enriched, unbleached","flour, wheat, all-purpose, enriched, unbleached",source_name
+all-purpose flour,"flour, wheat, all-purpose, unenriched, unbleached","flour, wheat, all-purpose, unenriched, unbleached",source_name
+almond,almond,almond,canonical
+almond,"nuts, almonds, dry roasted, with salt added","nuts, almonds, dry roasted, with salt added",source_name
+american cheese,american cheese,american cheese,canonical
+american cheese,cheese,cheese,derived
+american cheese,"cheese, pasteurized process, american, vitamin d fortified","cheese, pasteurized process, american, vitamin d fortified",source_name
+banana,banana,banana,canonical
+banana,"bananas, overripe, raw","bananas, overripe, raw",source_name
+banana,"bananas, ripe and slightly ripe, raw","bananas, ripe and slightly ripe, raw",source_name
+bartlett pear,bartlett pear,bartlett pear,canonical
+bartlett pear,pear,pear,derived
+bartlett pear,"pears, raw, bartlett","pears, raw, bartlett",source_name
+beef eye of round roast,beef eye of round roast,beef eye of round roast,canonical
+beef eye of round roast,"beef, round, eye of round roast, boneless, separable lean only, trimmed to 0"" fat, select, raw","beef, round, eye of round roast, boneless, separable lean only, trimmed to 0"" fat, select, raw",source_name
+beef porterhouse steak,beef porterhouse steak,beef porterhouse steak,canonical
+beef porterhouse steak,"beef, short loin, porterhouse steak, separable lean only, trimmed to 1/8"" fat, select, raw","beef, short loin, porterhouse steak, separable lean only, trimmed to 1/8"" fat, select, raw",source_name
+beef t-bone steak grilled,beef t-bone steak grilled,beef t-bone steak grilled,canonical
+beef t-bone steak grilled,beef t-bone steak,beef t-bone steak,derived
+beef t-bone steak grilled,"beef, short loin, t-bone steak, bone-in, separable lean only, trimmed to 1/8"" fat, choice, cooked, grilled","beef, short loin, t-bone steak, bone-in, separable lean only, trimmed to 1/8"" fat, choice, cooked, grilled",source_name
+beef tenderloin roast roasted,beef tenderloin roast roasted,beef tenderloin roast roasted,canonical
+beef tenderloin roast roasted,beef tenderloin roast,beef tenderloin roast,derived
+beef tenderloin roast roasted,"beef, loin, tenderloin roast, separable lean only, boneless, trimmed to 0"" fat, select, cooked, roasted","beef, loin, tenderloin roast, separable lean only, boneless, trimmed to 0"" fat, select, cooked, roasted",source_name
+beef top loin steak,beef top loin steak,beef top loin steak,canonical
+beef top loin steak,"beef, loin, top loin steak, boneless, lip-on, separable lean only, trimmed to 1/8"" fat, choice, raw","beef, loin, top loin steak, boneless, lip-on, separable lean only, trimmed to 1/8"" fat, choice, raw",source_name
+beef top round roast,beef top round roast,beef top round roast,canonical
+beef top round roast,"beef, round, top round roast, boneless, separable lean only, trimmed to 0"" fat, select, raw","beef, round, top round roast, boneless, separable lean only, trimmed to 0"" fat, select, raw",source_name
+bread flour,bread flour,bread flour,canonical
+bread flour,flour,flour,derived
+bread flour,"flour, bread, white, enriched, unbleached","flour, bread, white, enriched, unbleached",source_name
+breakfast sausage,breakfast sausage,breakfast sausage,canonical
+breakfast sausage,"sausage, breakfast sausage, beef, pre-cooked, unprepared","sausage, breakfast sausage, beef, pre-cooked, unprepared",source_name
+breakfast sausage,"sausage, turkey, breakfast links, mild, raw","sausage, turkey, breakfast links, mild, raw",source_name
+broccoli,broccoli,broccoli,canonical
+broccoli,"broccoli, raw","broccoli, raw",source_name
+cantaloupe melon,cantaloupe melon,cantaloupe melon,canonical
+cantaloupe melon,"melons, cantaloupe, raw","melons, cantaloupe, raw",source_name
+cheddar cheese,cheddar cheese,cheddar cheese,canonical
+cheddar cheese,cheese,cheese,derived
+cheddar cheese,"cheese, cheddar","cheese, cheddar",source_name
+chicken breast braised,chicken breast braised,chicken breast braised,canonical
+chicken breast braised,chicken breast,chicken breast,derived
+chicken breast braised,"chicken, broiler or fryers, breast, skinless, boneless, meat only, cooked, braised","chicken, broiler or fryers, breast, skinless, boneless, meat only, cooked, braised",source_name
+chicken drumstick braised,chicken drumstick braised,chicken drumstick braised,canonical
+chicken drumstick braised,chicken drumstick,chicken drumstick,derived
+chicken drumstick braised,"chicken, broilers or fryers, drumstick, meat only, cooked, braised","chicken, broilers or fryers, drumstick, meat only, cooked, braised",source_name
+chorizo sausage fried,chorizo sausage fried,chorizo sausage fried,canonical
+chorizo sausage fried,chorizo sausage,chorizo sausage,derived
+chorizo sausage fried,"sausage, pork, chorizo, link or ground, cooked, pan-fried","sausage, pork, chorizo, link or ground, cooked, pan-fried",source_name
+coconut oil,coconut oil,coconut oil,canonical
+coconut oil,"oil, coconut","oil, coconut",source_name
+corn flour,corn flour,corn flour,canonical
+corn flour,flour,flour,derived
+corn flour,"flour, corn, yellow, fine meal, enriched","flour, corn, yellow, fine meal, enriched",source_name
+cottage cheese,cottage cheese,cottage cheese,canonical
+cottage cheese,cheese,cheese,derived
+cottage cheese,"cheese, cottage, lowfat, 2% milkfat","cheese, cottage, lowfat, 2% milkfat",source_name
+dried egg,dried egg,dried egg,canonical
+dried egg,"egg, whole, dried","egg, whole, dried",source_name
+dried egg white,dried egg white,dried egg white,canonical
+dried egg white,"egg, white, dried","egg, white, dried",source_name
+dried egg yolk,dried egg yolk,dried egg yolk,canonical
+dried egg yolk,"egg, yolk, dried","egg, yolk, dried",source_name
+egg,egg,egg,canonical
+egg,"egg, whole, raw, frozen, pasteurized","egg, whole, raw, frozen, pasteurized",source_name
+egg,"eggs, grade a, large, egg whole","eggs, grade a, large, egg whole",source_name
+egg white,egg white,egg white,canonical
+egg white,"egg, white, raw, frozen, pasteurized","egg, white, raw, frozen, pasteurized",source_name
+egg white,"eggs, grade a, large, egg white","eggs, grade a, large, egg white",source_name
+egg yolk,egg yolk,egg yolk,canonical
+egg yolk,"egg, yolk, raw, frozen, pasteurized","egg, yolk, raw, frozen, pasteurized",source_name
+egg yolk,"eggs, grade a, large, egg yolk","eggs, grade a, large, egg yolk",source_name
+fig dried,fig dried,fig dried,canonical
+fig dried,"figs, dried, uncooked","figs, dried, uncooked",source_name
+flour,flour,flour,canonical
+flour,"flour, pastry, unenriched, unbleached","flour, pastry, unenriched, unbleached",source_name
+frankfurter,frankfurter,frankfurter,canonical
+frankfurter,"frankfurter, beef, unheated","frankfurter, beef, unheated",source_name
+fuji apple,fuji apple,fuji apple,canonical
+fuji apple,apple,apple,derived
+fuji apple,"apples, fuji, with skin, raw","apples, fuji, with skin, raw",source_name
+gala apple,gala apple,gala apple,canonical
+gala apple,apple,apple,derived
+gala apple,"apples, gala, with skin, raw","apples, gala, with skin, raw",source_name
+garlic,garlic,garlic,canonical
+garlic,"garlic, raw","garlic, raw",source_name
+granny smith apple,granny smith apple,granny smith apple,canonical
+granny smith apple,apple,apple,derived
+granny smith apple,"apples, granny smith, with skin, raw","apples, granny smith, with skin, raw",source_name
+granulated sugar,granulated sugar,granulated sugar,canonical
+granulated sugar,"sugars, granulated","sugars, granulated",source_name
+grape tomato,grape tomato,grape tomato,canonical
+grape tomato,tomato,tomato,derived
+grape tomato,"tomatoes, grape, raw","tomatoes, grape, raw",source_name
+green bean canned,green bean canned,green bean canned,canonical
+green bean canned,green bean,green bean,derived
+green bean canned,"beans, snap, green, canned, regular pack, drained solids","beans, snap, green, canned, regular pack, drained solids",source_name
+green kiwifruit,green kiwifruit,green kiwifruit,canonical
+green kiwifruit,"kiwifruit, green, raw","kiwifruit, green, raw",source_name
+haddock,haddock,haddock,canonical
+haddock,"fish, haddock, raw","fish, haddock, raw",source_name
+ham,ham,ham,canonical
+ham,"ham, sliced, pre-packaged, deli meat","ham, sliced, pre-packaged, deli meat",source_name
+honeycrisp apple,honeycrisp apple,honeycrisp apple,canonical
+honeycrisp apple,apple,apple,derived
+honeycrisp apple,"apples, honeycrisp, with skin, raw","apples, honeycrisp, with skin, raw",source_name
+hummus,hummus,hummus,canonical
+hummus,"hummus, commercial","hummus, commercial",source_name
+italian sausage fried,italian sausage fried,italian sausage fried,canonical
+italian sausage fried,italian sausage,italian sausage,derived
+italian sausage fried,"sausage, italian, pork, mild, cooked, pan-fried","sausage, italian, pork, mild, cooked, pan-fried",source_name
+kale,kale,kale,canonical
+kale,"kale, raw","kale, raw",source_name
+kale frozen,kale frozen,kale frozen,canonical
+kale frozen,kale,kale,derived
+kale frozen,"kale, frozen, cooked, boiled, drained, without salt","kale, frozen, cooked, boiled, drained, without salt",source_name
+kosher dill pickle,kosher dill pickle,kosher dill pickle,canonical
+kosher dill pickle,"pickles, cucumber, dill or kosher dill","pickles, cucumber, dill or kosher dill",source_name
+manzanilla olive,manzanilla olive,manzanilla olive,canonical
+manzanilla olive,"olives, green, manzanilla, stuffed with pimiento","olives, green, manzanilla, stuffed with pimiento",source_name
+marinara sauce,marinara sauce,marinara sauce,canonical
+marinara sauce,"sauce, pasta, spaghetti/marinara, ready-to-serve","sauce, pasta, spaghetti/marinara, ready-to-serve",source_name
+milk 1%,milk 1%,milk 1%,canonical
+milk 1%,milk,milk,derived
+milk 1%,"milk, lowfat, fluid, 1% milkfat, with added vitamin a and vitamin d","milk, lowfat, fluid, 1% milkfat, with added vitamin a and vitamin d",source_name
+milk 2%,milk 2%,milk 2%,canonical
+milk 2%,milk,milk,derived
+milk 2%,"milk, reduced fat, fluid, 2% milkfat, with added vitamin a and vitamin d","milk, reduced fat, fluid, 2% milkfat, with added vitamin a and vitamin d",source_name
+mozzarella cheese,mozzarella cheese,mozzarella cheese,canonical
+mozzarella cheese,cheese,cheese,derived
+mozzarella cheese,"cheese, mozzarella, low moisture, part-skim","cheese, mozzarella, low moisture, part-skim",source_name
+navel orange,navel orange,navel orange,canonical
+navel orange,"oranges, raw, navels","oranges, raw, navels",source_name
+nectarine,nectarine,nectarine,canonical
+nectarine,"nectarines, raw","nectarines, raw",source_name
+nonfat yogurt,nonfat yogurt,nonfat yogurt,canonical
+nonfat yogurt,"yogurt, greek, plain, nonfat","yogurt, greek, plain, nonfat",source_name
+nonfat yogurt,"yogurt, greek, strawberry, nonfat","yogurt, greek, strawberry, nonfat",source_name
+oatmeal cookie,oatmeal cookie,oatmeal cookie,canonical
+oatmeal cookie,"cookies, oatmeal, soft, with raisins","cookies, oatmeal, soft, with raisins",source_name
+onion ring frozen,onion ring frozen,onion ring frozen,canonical
+onion ring frozen,onion ring,onion ring,derived
+onion ring frozen,"onion rings, breaded, par fried, frozen, prepared, heated in oven","onion rings, breaded, par fried, frozen, prepared, heated in oven",source_name
+parmesan cheese,parmesan cheese,parmesan cheese,canonical
+parmesan cheese,cheese,cheese,derived
+parmesan cheese,"cheese, parmesan, grated","cheese, parmesan, grated",source_name
+pollock,pollock,pollock,canonical
+pollock,"fish, pollock, raw","fish, pollock, raw",source_name
+queso seco cheese,queso seco cheese,queso seco cheese,canonical
+queso seco cheese,cheese,cheese,derived
+queso seco cheese,"cheese, dry white, queso seco","cheese, dry white, queso seco",source_name
+red carrot frozen,red carrot frozen,red carrot frozen,canonical
+red carrot frozen,red carrot,red carrot,derived
+red carrot frozen,"carrots, frozen, unprepared","carrots, frozen, unprepared",source_name
+red delicious apple,red delicious apple,red delicious apple,canonical
+red delicious apple,apple,apple,derived
+red delicious apple,"apples, red delicious, with skin, raw","apples, red delicious, with skin, raw",source_name
+red onion,red onion,red onion,canonical
+red onion,onion,onion,derived
+red onion,"onions, red, raw","onions, red, raw",source_name
+red tomato canned,red tomato canned,red tomato canned,canonical
+red tomato canned,red tomato,red tomato,derived
+red tomato canned,"tomatoes, canned, red, ripe, diced","tomatoes, canned, red, ripe, diced",source_name
+rice flour,rice flour,rice flour,canonical
+rice flour,flour,flour,derived
+rice flour,"flour, rice, brown","flour, rice, brown",source_name
+rice flour,"flour, rice, glutinous","flour, rice, glutinous",source_name
+rice flour,"flour, rice, white, unenriched","flour, rice, white, unenriched",source_name
+ricotta cheese,ricotta cheese,ricotta cheese,canonical
+ricotta cheese,cheese,cheese,derived
+ricotta cheese,"cheese, ricotta, whole milk","cheese, ricotta, whole milk",source_name
+romaine lettuce,romaine lettuce,romaine lettuce,canonical
+romaine lettuce,lettuce,lettuce,derived
+romaine lettuce,"lettuce, cos or romaine, raw","lettuce, cos or romaine, raw",source_name
+salsa,salsa,salsa,canonical
+salsa,"sauce, salsa, ready-to-serve","sauce, salsa, ready-to-serve",source_name
+skim milk,skim milk,skim milk,canonical
+skim milk,milk,milk,derived
+skim milk,"milk, nonfat, fluid, with added vitamin a and vitamin d","milk, nonfat, fluid, with added vitamin a and vitamin d",source_name
+smooth peanut butter,smooth peanut butter,smooth peanut butter,canonical
+smooth peanut butter,"peanut butter, smooth style, with salt","peanut butter, smooth style, with salt",source_name
+soy flour,soy flour,soy flour,canonical
+soy flour,flour,flour,derived
+soy flour,"flour, soy, defatted","flour, soy, defatted",source_name
+soy flour,"flour, soy, full-fat","flour, soy, full-fat",source_name
+strawberry,strawberry,strawberry,canonical
+strawberry,"strawberries, raw","strawberries, raw",source_name
+sunflower seeds,sunflower seeds,sunflower seeds,canonical
+sunflower seeds,"seeds, sunflower seed kernels, dry roasted, with salt added","seeds, sunflower seed kernels, dry roasted, with salt added",source_name
+swiss cheese,swiss cheese,swiss cheese,canonical
+swiss cheese,cheese,cheese,derived
+swiss cheese,"cheese, swiss","cheese, swiss",source_name
+tuna canned,tuna canned,tuna canned,canonical
+tuna canned,tuna,tuna,derived
+tuna canned,"fish, tuna, light, canned in water, drained solids","fish, tuna, light, canned in water, drained solids",source_name
+turkey ground,turkey ground,turkey ground,canonical
+turkey ground,"turkey, ground, 93% lean, 7% fat, pan-broiled crumbles","turkey, ground, 93% lean, 7% fat, pan-broiled crumbles",source_name
+white bread,white bread,white bread,canonical
+white bread,"bread, white, commercially prepared","bread, white, commercially prepared",source_name
+white grapefruit juice canned,white grapefruit juice canned,white grapefruit juice canned,canonical
+white grapefruit juice canned,white grapefruit juice,white grapefruit juice,derived
+white grapefruit juice canned,"grapefruit juice, white, canned or bottled, unsweetened","grapefruit juice, white, canned or bottled, unsweetened",source_name
+white onion,white onion,white onion,canonical
+white onion,onion,onion,derived
+white onion,"onions, white, raw","onions, white, raw",source_name
+whole milk,whole milk,whole milk,canonical
+whole milk,milk,milk,derived
+whole milk,"milk, whole, 3.25% milkfat, with added vitamin d","milk, whole, 3.25% milkfat, with added vitamin d",source_name
+whole wheat bread,whole wheat bread,whole wheat bread,canonical
+whole wheat bread,"bread, whole-wheat, commercially prepared","bread, whole-wheat, commercially prepared",source_name
+whole wheat flour,whole wheat flour,whole wheat flour,canonical
+whole wheat flour,flour,flour,derived
+whole wheat flour,"flour, whole wheat, unenriched","flour, whole wheat, unenriched",source_name
+yellow mustard,yellow mustard,yellow mustard,canonical
+yellow mustard,"mustard, prepared, yellow","mustard, prepared, yellow",source_name
+yellow onion,yellow onion,yellow onion,canonical
+yellow onion,onion,onion,derived
+yellow onion,"onions, yellow, raw","onions, yellow, raw",source_name
+yellow peach,yellow peach,yellow peach,canonical
+yellow peach,peach,peach,derived
+yellow peach,"peaches, yellow, raw","peaches, yellow, raw",source_name
