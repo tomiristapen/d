@@ -1,0 +1,17 @@
+CREATE TABLE IF NOT EXISTS diary_entries (
+    id BIGSERIAL PRIMARY KEY,
+    user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    source TEXT NOT NULL,
+    name TEXT NOT NULL,
+    amount_g DOUBLE PRECISION NOT NULL DEFAULT 0,
+    calories DOUBLE PRECISION NOT NULL DEFAULT 0,
+    protein DOUBLE PRECISION NOT NULL DEFAULT 0,
+    fat DOUBLE PRECISION NOT NULL DEFAULT 0,
+    carbs DOUBLE PRECISION NOT NULL DEFAULT 0,
+    ingredients JSONB NOT NULL DEFAULT '[]',
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_diary_entries_user_id_created_at
+    ON diary_entries(user_id, created_at DESC);
+

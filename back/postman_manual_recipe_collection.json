@@ -1,0 +1,1379 @@
+{
+  "info": {
+    "name": "back API - Manual + Recipe",
+    "_postman_id": "7a3b87df-6a3f-4d14-89c1-7bb8fd79c791",
+    "description": "Focused Postman collection for manual and recipe flows. Use a verified account, run Login first, then run the Setup folder from top to bottom once to create deterministic custom products for the rest of the checks.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url", "value": "http://localhost:8080" },
+    { "key": "test_email", "value": "test@example.com" },
+    { "key": "test_password", "value": "ChangeMe123!" },
+    { "key": "verify_code", "value": "" },
+    { "key": "google_id_token", "value": "" },
+    { "key": "access_token", "value": "" },
+    { "key": "refresh_token", "value": "" },
+    { "key": "seed_run_id", "value": "" },
+    { "key": "manual_custom_name", "value": "" },
+    { "key": "manual_choice_one_name", "value": "" },
+    { "key": "manual_choice_two_name", "value": "" },
+    { "key": "manual_choice_query", "value": "" },
+    { "key": "recipe_chicken_name", "value": "" },
+    { "key": "recipe_tomato_name", "value": "" },
+    { "key": "recipe_rice_name", "value": "" },
+    { "key": "recipe_mystery_name", "value": "" },
+    { "key": "recipe_mystery_query", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "POST /api/v1/auth/register",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 201', () => pm.response.to.have.status(201));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{test_email}}\",\n  \"password\": \"{{test_password}}\",\n  \"confirm_password\": \"{{test_password}}\"\n}\n"
+            },
+            "url": "{{base_url}}/api/v1/auth/register"
+          }
+        },
+        {
+          "name": "POST /api/v1/auth/send-verification-code",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{test_email}}\"\n}\n"
+            },
+            "url": "{{base_url}}/api/v1/auth/send-verification-code"
+          }
+        },
+        {
+          "name": "POST /api/v1/auth/verify-email",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{test_email}}\",\n  \"code\": \"{{verify_code}}\"\n}\n"
+            },
+            "url": "{{base_url}}/api/v1/auth/verify-email"
+          }
+        },
+        {
+          "name": "POST /api/v1/auth/login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('has access token', () => !!json.access_token);",
+                  "pm.test('has refresh token', () => !!json.refresh_token);",
+                  "if (json.access_token) pm.collectionVariables.set('access_token', json.access_token);",
+                  "if (json.refresh_token) pm.collectionVariables.set('refresh_token', json.refresh_token);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{test_email}}\",\n  \"password\": \"{{test_password}}\"\n}\n"
+            },
+            "url": "{{base_url}}/api/v1/auth/login"
+          }
+        },
+        {
+          "name": "POST /api/v1/auth/google",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('has access token', () => !!json.access_token);",
+                  "pm.test('has refresh token', () => !!json.refresh_token);",
+                  "if (json.access_token) pm.collectionVariables.set('access_token', json.access_token);",
+                  "if (json.refresh_token) pm.collectionVariables.set('refresh_token', json.refresh_token);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id_token\": \"{{google_id_token}}\"\n}\n"
+            },
+            "url": "{{base_url}}/api/v1/auth/google"
+          }
+        },
+        {
+          "name": "POST /api/v1/auth/set-password (auth required)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('password set', () => json.status === 'password_set');"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"password\": \"{{test_password}}\",\n  \"confirm_password\": \"{{test_password}}\"\n}\n"
+            },
+            "url": "{{base_url}}/api/v1/auth/set-password"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Setup - deterministic custom products",
+      "item": [
+        {
+          "name": "POST /api/v1/manual/custom - seed exact product (resets seed vars)",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const runId = Date.now().toString();",
+                  "pm.collectionVariables.set('seed_run_id', runId);",
+                  "pm.collectionVariables.set('manual_custom_name', `qa manual cake ${runId}`);",
+                  "pm.collectionVariables.set('manual_choice_one_name', `qa manual choice ${runId} one`);",
+                  "pm.collectionVariables.set('manual_choice_two_name', `qa manual choice ${runId} two`);",
+                  "pm.collectionVariables.set('manual_choice_query', `qa manual choice ${runId}`);",
+                  "pm.collectionVariables.set('recipe_chicken_name', `qa recipe chicken ${runId}`);",
+                  "pm.collectionVariables.set('recipe_tomato_name', `qa recipe tomato ${runId}`);",
+                  "pm.collectionVariables.set('recipe_rice_name', `qa recipe rice ${runId}`);",
+                  "pm.collectionVariables.set('recipe_mystery_name', `qa mystery ${runId} soup`);",
+                  "pm.collectionVariables.set('recipe_mystery_query', `qa mystery ${runId}`);"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "pm.test('status 201', () => pm.response.to.have.status(201));",
+                  "pm.test('created', () => json.status === 'created');"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"{{manual_custom_name}}\",\n  \"calories\": 300,\n  \"protein\": 10,\n  \"fat\": 15,\n  \"carbs\": 40\n}\n"
+            },
+            "url": "{{base_url}}/api/v1/manual/custom"
+          }
+        },
+        {
+          "name": "POST /api/v1/manual/custom - seed suggestion product one",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "pm.test('status 201', () => pm.response.to.have.status(201));",
+                  "pm.test('created', () => json.status === 'created');"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"{{manual_choice_one_name}}\",\n  \"calories\": 110,\n  \"protein\": 12,\n  \"fat\": 4,\n  \"carbs\": 9\n}\n"
+            },
+            "url": "{{base_url}}/api/v1/manual/custom"
+          }
+        },
+        {
+          "name": "POST /api/v1/manual/custom - seed suggestion product two",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "pm.test('status 201', () => pm.response.to.have.status(201));",
+                  "pm.test('created', () => json.status === 'created');"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"{{manual_choice_two_name}}\",\n  \"calories\": 140,\n  \"protein\": 15,\n  \"fat\": 6,\n  \"carbs\": 12\n}\n"
+            },
+            "url": "{{base_url}}/api/v1/manual/custom"
+          }
+        },
+        {
+          "name": "POST /api/v1/manual/custom - seed recipe chicken",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "pm.test('status 201', () => pm.response.to.have.status(201));",
+                  "pm.test('created', () => json.status === 'created');"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"{{recipe_chicken_name}}\",\n  \"calories\": 165,\n  \"protein\": 31,\n  \"fat\": 3.6,\n  \"carbs\": 0\n}\n"
+            },
+            "url": "{{base_url}}/api/v1/manual/custom"
+          }
+        },
+        {
+          "name": "POST /api/v1/manual/custom - seed recipe tomato",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "pm.test('status 201', () => pm.response.to.have.status(201));",
+                  "pm.test('created', () => json.status === 'created');"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"{{recipe_tomato_name}}\",\n  \"calories\": 18,\n  \"protein\": 0.9,\n  \"fat\": 0.2,\n  \"carbs\": 3.9\n}\n"
+            },
+            "url": "{{base_url}}/api/v1/manual/custom"
+          }
+        },
+        {
+          "name": "POST /api/v1/manual/custom - seed recipe rice",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "pm.test('status 201', () => pm.response.to.have.status(201));",
+                  "pm.test('created', () => json.status === 'created');"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"{{recipe_rice_name}}\",\n  \"calories\": 130,\n  \"protein\": 2.7,\n  \"fat\": 0.3,\n  \"carbs\": 28\n}\n"
+            },
+            "url": "{{base_url}}/api/v1/manual/custom"
+          }
+        },
+        {
+          "name": "POST /api/v1/manual/custom - seed recipe mystery",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "pm.test('status 201', () => pm.response.to.have.status(201));",
+                  "pm.test('created', () => json.status === 'created');"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"{{recipe_mystery_name}}\",\n  \"calories\": 77,\n  \"protein\": 3,\n  \"fat\": 1,\n  \"carbs\": 12\n}\n"
+            },
+            "url": "{{base_url}}/api/v1/manual/custom"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Manual - Analyze",
+      "item": [
+        {
+          "name": "POST /api/v1/manual/analyze - exact match -> 200",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "const expected = pm.collectionVariables.get('manual_custom_name');",
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('product name matches', () => json.product && json.product.name === expected);",
+                  "pm.test('calories 300', () => pm.expect(json.product.calories).to.be.closeTo(300, 0.000001));",
+                  "pm.test('protein 10', () => pm.expect(json.product.protein).to.be.closeTo(10, 0.000001));",
+                  "pm.test('fat 15', () => pm.expect(json.product.fat).to.be.closeTo(15, 0.000001));",
+                  "pm.test('carbs 40', () => pm.expect(json.product.carbs).to.be.closeTo(40, 0.000001));",
+                  "pm.test('confidence 1', () => pm.expect(json.confidence).to.equal(1));",
+                  "pm.test('suggestions empty', () => Array.isArray(json.suggestions) && json.suggestions.length === 0);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"{{manual_custom_name}}\",\n  \"amount\": 100\n}\n" },
+            "url": "{{base_url}}/api/v1/manual/analyze"
+          }
+        },
+        {
+          "name": "POST /api/v1/manual/analyze - uppercase and spaces normalized -> 200",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "const expected = pm.collectionVariables.get('manual_custom_name');",
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('normalized name matches', () => json.product && json.product.name === expected);",
+                  "pm.test('confidence 1', () => pm.expect(json.confidence).to.equal(1));",
+                  "pm.test('suggestions empty', () => Array.isArray(json.suggestions) && json.suggestions.length === 0);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"  QA   MANUAL   CAKE {{seed_run_id}}  \",\n  \"amount\": 100\n}\n" },
+            "url": "{{base_url}}/api/v1/manual/analyze"
+          }
+        },
+        {
+          "name": "POST /api/v1/manual/analyze - amount 1g -> 200",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('calories 3', () => pm.expect(json.product.calories).to.be.closeTo(3, 0.000001));",
+                  "pm.test('protein 0.1', () => pm.expect(json.product.protein).to.be.closeTo(0.1, 0.000001));",
+                  "pm.test('fat 0.15', () => pm.expect(json.product.fat).to.be.closeTo(0.15, 0.000001));",
+                  "pm.test('carbs 0.4', () => pm.expect(json.product.carbs).to.be.closeTo(0.4, 0.000001));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"{{manual_custom_name}}\",\n  \"amount\": 1\n}\n" },
+            "url": "{{base_url}}/api/v1/manual/analyze"
+          }
+        },
+        {
+          "name": "POST /api/v1/manual/analyze - amount 0.0001g -> 200",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('calories tiny scale', () => pm.expect(json.product.calories).to.be.closeTo(0.0003, 0.000000001));",
+                  "pm.test('protein tiny scale', () => pm.expect(json.product.protein).to.be.closeTo(0.00001, 0.000000001));",
+                  "pm.test('fat tiny scale', () => pm.expect(json.product.fat).to.be.closeTo(0.000015, 0.000000001));",
+                  "pm.test('carbs tiny scale', () => pm.expect(json.product.carbs).to.be.closeTo(0.00004, 0.000000001));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"{{manual_custom_name}}\",\n  \"amount\": 0.0001\n}\n" },
+            "url": "{{base_url}}/api/v1/manual/analyze"
+          }
+        },
+        {
+          "name": "POST /api/v1/manual/analyze - amount 2000g -> 200",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('calories 6000', () => pm.expect(json.product.calories).to.be.closeTo(6000, 0.000001));",
+                  "pm.test('protein 200', () => pm.expect(json.product.protein).to.be.closeTo(200, 0.000001));",
+                  "pm.test('fat 300', () => pm.expect(json.product.fat).to.be.closeTo(300, 0.000001));",
+                  "pm.test('carbs 800', () => pm.expect(json.product.carbs).to.be.closeTo(800, 0.000001));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"{{manual_custom_name}}\",\n  \"amount\": 2000\n}\n" },
+            "url": "{{base_url}}/api/v1/manual/analyze"
+          }
+        },
+        {
+          "name": "POST /api/v1/manual/analyze - suggestions without auto selection -> 200",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "const one = pm.collectionVariables.get('manual_choice_one_name');",
+                  "const two = pm.collectionVariables.get('manual_choice_two_name');",
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('product null', () => json.product === null);",
+                  "pm.test('confidence null', () => json.confidence === null);",
+                  "pm.test('suggestions include seeded names', () => Array.isArray(json.suggestions) && json.suggestions.includes(one) && json.suggestions.includes(two));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"{{manual_choice_query}}\",\n  \"amount\": 100\n}\n" },
+            "url": "{{base_url}}/api/v1/manual/analyze"
+          }
+        },
+        {
+          "name": "POST /api/v1/manual/analyze - not found -> 404",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "pm.test('status 404', () => pm.response.to.have.status(404));",
+                  "pm.test('code NOT_FOUND', () => json.error && json.error.code === 'NOT_FOUND');",
+                  "pm.test('message Product not found', () => json.error && json.error.message === 'Product not found');"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"ghost manual {{seed_run_id}}\",\n  \"amount\": 100\n}\n" },
+            "url": "{{base_url}}/api/v1/manual/analyze"
+          }
+        },
+        {
+          "name": "POST /api/v1/manual/analyze - invalid JSON (truncated) -> 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "pm.test('status 400', () => pm.response.to.have.status(400));",
+                  "pm.test('code BAD_REQUEST', () => json.error && json.error.code === 'BAD_REQUEST');",
+                  "pm.test('message invalid json body', () => json.error && json.error.message === 'invalid json body');"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
+            "body": { "mode": "raw", "raw": "{\"name\":\"{{manual_custom_name}}\"" },
+            "url": "{{base_url}}/api/v1/manual/analyze"
+          }
+        },
+        {
+          "name": "POST /api/v1/manual/analyze - invalid JSON token -> 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "pm.test('status 400', () => pm.response.to.have.status(400));",
+                  "pm.test('code BAD_REQUEST', () => json.error && json.error.code === 'BAD_REQUEST');",
+                  "pm.test('message invalid json body', () => json.error && json.error.message === 'invalid json body');"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
+            "body": { "mode": "raw", "raw": "{ name: chicken }" },
+            "url": "{{base_url}}/api/v1/manual/analyze"
+          }
+        },
+        {
+          "name": "POST /api/v1/manual/analyze - missing amount -> 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "pm.test('status 400', () => pm.response.to.have.status(400));",
+                  "pm.test('code INVALID_AMOUNT', () => json.error && json.error.code === 'INVALID_AMOUNT');",
+                  "pm.test('message Invalid amount', () => json.error && json.error.message === 'Invalid amount');"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"{{manual_custom_name}}\"\n}\n" },
+            "url": "{{base_url}}/api/v1/manual/analyze"
+          }
+        },
+        {
+          "name": "POST /api/v1/manual/analyze - empty object -> 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "pm.test('status 400', () => pm.response.to.have.status(400));",
+                  "pm.test('code INVALID_NAME', () => json.error && json.error.code === 'INVALID_NAME');",
+                  "pm.test('message Invalid name', () => json.error && json.error.message === 'Invalid name');"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
+            "body": { "mode": "raw", "raw": "{}" },
+            "url": "{{base_url}}/api/v1/manual/analyze"
+          }
+        },
+        {
+          "name": "POST /api/v1/manual/analyze - amount 0 -> 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "pm.test('status 400', () => pm.response.to.have.status(400));",
+                  "pm.test('code INVALID_AMOUNT', () => json.error && json.error.code === 'INVALID_AMOUNT');"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"{{manual_custom_name}}\",\n  \"amount\": 0\n}\n" },
+            "url": "{{base_url}}/api/v1/manual/analyze"
+          }
+        },
+        {
+          "name": "POST /api/v1/manual/analyze - negative amount -> 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "pm.test('status 400', () => pm.response.to.have.status(400));",
+                  "pm.test('code INVALID_AMOUNT', () => json.error && json.error.code === 'INVALID_AMOUNT');"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"{{manual_custom_name}}\",\n  \"amount\": -50\n}\n" },
+            "url": "{{base_url}}/api/v1/manual/analyze"
+          }
+        },
+        {
+          "name": "POST /api/v1/manual/analyze - amount above max -> 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "pm.test('status 400', () => pm.response.to.have.status(400));",
+                  "pm.test('code INVALID_AMOUNT', () => json.error && json.error.code === 'INVALID_AMOUNT');"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"{{manual_custom_name}}\",\n  \"amount\": 2500\n}\n" },
+            "url": "{{base_url}}/api/v1/manual/analyze"
+          }
+        },
+        {
+          "name": "POST /api/v1/manual/analyze - no Content-Type header -> 200",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "const expected = pm.collectionVariables.get('manual_custom_name');",
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('product name matches', () => json.product && json.product.name === expected);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{access_token}}" }],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"{{manual_custom_name}}\",\n  \"amount\": 100\n}\n" },
+            "url": "{{base_url}}/api/v1/manual/analyze"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Manual - Custom",
+      "item": [
+        {
+          "name": "POST /api/v1/manual/custom - invalid nutrients -> 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "pm.test('status 400', () => pm.response.to.have.status(400));",
+                  "pm.test('code INVALID_NUTRIENTS', () => json.error && json.error.code === 'INVALID_NUTRIENTS');",
+                  "pm.test('message Invalid nutrients', () => json.error && json.error.message === 'Invalid nutrients');"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"\",\n  \"calories\": 300,\n  \"protein\": 10,\n  \"fat\": 15,\n  \"carbs\": 40\n}\n" },
+            "url": "{{base_url}}/api/v1/manual/custom"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Manual - Add To Diary",
+      "item": [
+        {
+          "name": "POST /api/v1/manual/add-to-diary - exact product -> 200",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "const expected = pm.collectionVariables.get('manual_custom_name');",
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('source manual', () => json.source === 'manual');",
+                  "pm.test('saved name matches', () => json.name === expected);",
+                  "pm.test('amount 100', () => pm.expect(json.amount_g).to.be.closeTo(100, 0.000001));",
+                  "pm.test('ingredients contain product', () => Array.isArray(json.ingredients) && json.ingredients.includes(expected));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"{{manual_custom_name}}\",\n  \"amount\": 100\n}\n" },
+            "url": "{{base_url}}/api/v1/manual/add-to-diary"
+          }
+        },
+        {
+          "name": "POST /api/v1/manual/add-to-diary - suggestions require explicit selection -> 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "pm.test('status 400', () => pm.response.to.have.status(400));",
+                  "pm.test('code NOT_FOUND', () => json.error && json.error.code === 'NOT_FOUND');",
+                  "pm.test('message Product not found', () => json.error && json.error.message === 'Product not found');"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"{{manual_choice_query}}\",\n  \"amount\": 100\n}\n" },
+            "url": "{{base_url}}/api/v1/manual/add-to-diary"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Recipe - Analyze",
+      "item": [
+        {
+          "name": "POST /api/v1/recipe/analyze - single ingredient with confidence -> 200",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "const tomato = pm.collectionVariables.get('recipe_tomato_name');",
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('recipe name salad', () => json.product && json.product.name === 'salad');",
+                  "pm.test('confidence 1', () => pm.expect(json.confidence).to.equal(1));",
+                  "pm.test('resolved ingredient name', () => Array.isArray(json.ingredients) && json.ingredients[0].name === tomato);",
+                  "pm.test('calories 18', () => pm.expect(json.product.calories).to.be.closeTo(18, 0.000001));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"salad\",\n  \"ingredients\": [\n    {\n      \"name\": \"{{recipe_tomato_name}}\",\n      \"amount\": 100\n    }\n  ]\n}\n" },
+            "url": "{{base_url}}/api/v1/recipe/analyze"
+          }
+        },
+        {
+          "name": "POST /api/v1/recipe/analyze - multiple ingredients aggregate -> 200",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "const chicken = pm.collectionVariables.get('recipe_chicken_name');",
+                  "const rice = pm.collectionVariables.get('recipe_rice_name');",
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('recipe name meal', () => json.product && json.product.name === 'meal');",
+                  "pm.test('calories 460', () => pm.expect(json.product.calories).to.be.closeTo(460, 0.000001));",
+                  "pm.test('protein 64.7', () => pm.expect(json.product.protein).to.be.closeTo(64.7, 0.000001));",
+                  "pm.test('fat 7.5', () => pm.expect(json.product.fat).to.be.closeTo(7.5, 0.000001));",
+                  "pm.test('carbs 28', () => pm.expect(json.product.carbs).to.be.closeTo(28, 0.000001));",
+                  "pm.test('two resolved ingredients', () => Array.isArray(json.ingredients) && json.ingredients.length === 2);",
+                  "pm.test('ingredient names match', () => json.ingredients[0].name === chicken && json.ingredients[1].name === rice);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"meal\",\n  \"ingredients\": [\n    {\n      \"name\": \"{{recipe_chicken_name}}\",\n      \"amount\": 200\n    },\n    {\n      \"name\": \"{{recipe_rice_name}}\",\n      \"amount\": 100\n    }\n  ]\n}\n" },
+            "url": "{{base_url}}/api/v1/recipe/analyze"
+          }
+        },
+        {
+          "name": "POST /api/v1/recipe/analyze - duplicate ingredients normalized and merged -> 200",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "const chicken = pm.collectionVariables.get('recipe_chicken_name');",
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('one merged ingredient', () => Array.isArray(json.ingredients) && json.ingredients.length === 1);",
+                  "pm.test('merged ingredient name', () => json.ingredients[0].name === chicken);",
+                  "pm.test('merged amount 300', () => pm.expect(json.ingredients[0].amount).to.be.closeTo(300, 0.000001));",
+                  "pm.test('calories 495', () => pm.expect(json.product.calories).to.be.closeTo(495, 0.000001));",
+                  "pm.test('protein 93', () => pm.expect(json.product.protein).to.be.closeTo(93, 0.000001));",
+                  "pm.test('fat 10.8', () => pm.expect(json.product.fat).to.be.closeTo(10.8, 0.000001));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"double chicken\",\n  \"ingredients\": [\n    {\n      \"name\": \"  QA   RECIPE   CHICKEN {{seed_run_id}}  \",\n      \"amount\": 100\n    },\n    {\n      \"name\": \"{{recipe_chicken_name}}\",\n      \"amount\": 200\n    }\n  ]\n}\n" },
+            "url": "{{base_url}}/api/v1/recipe/analyze"
+          }
+        },
+        {
+          "name": "POST /api/v1/recipe/analyze - tiny amount -> 200",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('calories tiny scale', () => pm.expect(json.product.calories).to.be.closeTo(0.000018, 0.000000001));",
+                  "pm.test('protein tiny scale', () => pm.expect(json.product.protein).to.be.closeTo(0.0000009, 0.000000001));",
+                  "pm.test('fat tiny scale', () => pm.expect(json.product.fat).to.be.closeTo(0.0000002, 0.000000001));",
+                  "pm.test('carbs tiny scale', () => pm.expect(json.product.carbs).to.be.closeTo(0.0000039, 0.000000001));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"tiny milk\",\n  \"ingredients\": [\n    {\n      \"name\": \"{{recipe_tomato_name}}\",\n      \"amount\": 0.0001\n    }\n  ]\n}\n" },
+            "url": "{{base_url}}/api/v1/recipe/analyze"
+          }
+        },
+        {
+          "name": "POST /api/v1/recipe/analyze - large in-range amounts -> 200",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('calories 2565', () => pm.expect(json.product.calories).to.be.closeTo(2565, 0.000001));",
+                  "pm.test('protein 469.5', () => pm.expect(json.product.protein).to.be.closeTo(469.5, 0.000001));",
+                  "pm.test('fat 55', () => pm.expect(json.product.fat).to.be.closeTo(55, 0.000001));",
+                  "pm.test('carbs 19.5', () => pm.expect(json.product.carbs).to.be.closeTo(19.5, 0.000001));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"bulk meal\",\n  \"ingredients\": [\n    {\n      \"name\": \"{{recipe_chicken_name}}\",\n      \"amount\": 1500\n    },\n    {\n      \"name\": \"{{recipe_tomato_name}}\",\n      \"amount\": 500\n    }\n  ]\n}\n" },
+            "url": "{{base_url}}/api/v1/recipe/analyze"
+          }
+        },
+        {
+          "name": "POST /api/v1/recipe/analyze - custom product ingredient -> 200",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "const custom = pm.collectionVariables.get('manual_custom_name');",
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('recipe name dessert', () => json.product && json.product.name === 'dessert');",
+                  "pm.test('calories 300', () => pm.expect(json.product.calories).to.be.closeTo(300, 0.000001));",
+                  "pm.test('protein 10', () => pm.expect(json.product.protein).to.be.closeTo(10, 0.000001));",
+                  "pm.test('fat 15', () => pm.expect(json.product.fat).to.be.closeTo(15, 0.000001));",
+                  "pm.test('carbs 40', () => pm.expect(json.product.carbs).to.be.closeTo(40, 0.000001));",
+                  "pm.test('ingredient name matches custom product', () => Array.isArray(json.ingredients) && json.ingredients[0].name === custom);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"dessert\",\n  \"ingredients\": [\n    {\n      \"name\": \"  QA   MANUAL   CAKE {{seed_run_id}}  \",\n      \"amount\": 100\n    }\n  ]\n}\n" },
+            "url": "{{base_url}}/api/v1/recipe/analyze"
+          }
+        },
+        {
+          "name": "POST /api/v1/recipe/analyze - invalid JSON -> 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "pm.test('status 400', () => pm.response.to.have.status(400));",
+                  "pm.test('code BAD_REQUEST', () => json.error && json.error.code === 'BAD_REQUEST');",
+                  "pm.test('message invalid json body', () => json.error && json.error.message === 'invalid json body');"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
+            "body": { "mode": "raw", "raw": "{\"name\":\"meal\",\"ingredients\":[" },
+            "url": "{{base_url}}/api/v1/recipe/analyze"
+          }
+        },
+        {
+          "name": "POST /api/v1/recipe/analyze - empty recipe -> 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "pm.test('status 400', () => pm.response.to.have.status(400));",
+                  "pm.test('code EMPTY_RECIPE', () => json.error && json.error.code === 'EMPTY_RECIPE');",
+                  "pm.test('message Recipe is empty', () => json.error && json.error.message === 'Recipe is empty');"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
+            "body": { "mode": "raw", "raw": "{}" },
+            "url": "{{base_url}}/api/v1/recipe/analyze"
+          }
+        },
+        {
+          "name": "POST /api/v1/recipe/analyze - empty ingredient name -> 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "pm.test('status 400', () => pm.response.to.have.status(400));",
+                  "pm.test('code INVALID_NAME', () => json.error && json.error.code === 'INVALID_NAME');",
+                  "pm.test('message Invalid name', () => json.error && json.error.message === 'Invalid name');"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"bad recipe\",\n  \"ingredients\": [\n    {\n      \"name\": \"\",\n      \"amount\": 100\n    }\n  ]\n}\n" },
+            "url": "{{base_url}}/api/v1/recipe/analyze"
+          }
+        },
+        {
+          "name": "POST /api/v1/recipe/analyze - ingredient amount 0 -> 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "pm.test('status 400', () => pm.response.to.have.status(400));",
+                  "pm.test('code INVALID_AMOUNT', () => json.error && json.error.code === 'INVALID_AMOUNT');"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"bad amount\",\n  \"ingredients\": [\n    {\n      \"name\": \"{{recipe_tomato_name}}\",\n      \"amount\": 0\n    }\n  ]\n}\n" },
+            "url": "{{base_url}}/api/v1/recipe/analyze"
+          }
+        },
+        {
+          "name": "POST /api/v1/recipe/analyze - negative ingredient amount -> 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "pm.test('status 400', () => pm.response.to.have.status(400));",
+                  "pm.test('code INVALID_AMOUNT', () => json.error && json.error.code === 'INVALID_AMOUNT');"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"bad amount\",\n  \"ingredients\": [\n    {\n      \"name\": \"{{recipe_tomato_name}}\",\n      \"amount\": -50\n    }\n  ]\n}\n" },
+            "url": "{{base_url}}/api/v1/recipe/analyze"
+          }
+        },
+        {
+          "name": "POST /api/v1/recipe/analyze - ingredient amount above max -> 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "pm.test('status 400', () => pm.response.to.have.status(400));",
+                  "pm.test('code INVALID_AMOUNT', () => json.error && json.error.code === 'INVALID_AMOUNT');"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"large meal\",\n  \"ingredients\": [\n    {\n      \"name\": \"{{recipe_tomato_name}}\",\n      \"amount\": 2500\n    }\n  ]\n}\n" },
+            "url": "{{base_url}}/api/v1/recipe/analyze"
+          }
+        },
+        {
+          "name": "POST /api/v1/recipe/analyze - mixed valid and invalid ingredient -> 404",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "pm.test('status 404', () => pm.response.to.have.status(404));",
+                  "pm.test('code INGREDIENT_NOT_FOUND', () => json.error && json.error.code === 'INGREDIENT_NOT_FOUND');",
+                  "pm.test('message Ingredient not found', () => json.error && json.error.message === 'Ingredient not found');"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"mixed meal\",\n  \"ingredients\": [\n    {\n      \"name\": \"{{recipe_chicken_name}}\",\n      \"amount\": 100\n    },\n    {\n      \"name\": \"ghost ingredient {{seed_run_id}}\",\n      \"amount\": 100\n    }\n  ]\n}\n" },
+            "url": "{{base_url}}/api/v1/recipe/analyze"
+          }
+        },
+        {
+          "name": "POST /api/v1/recipe/analyze - ingredient with suggestions -> 404",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "pm.test('status 404', () => pm.response.to.have.status(404));",
+                  "pm.test('code INGREDIENT_NOT_FOUND', () => json.error && json.error.code === 'INGREDIENT_NOT_FOUND');"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"suggested ingredient\",\n  \"ingredients\": [\n    {\n      \"name\": \"{{recipe_mystery_query}}\",\n      \"amount\": 100\n    }\n  ]\n}\n" },
+            "url": "{{base_url}}/api/v1/recipe/analyze"
+          }
+        },
+        {
+          "name": "POST /api/v1/recipe/analyze - ingredient not found without suggestions -> 404",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "pm.test('status 404', () => pm.response.to.have.status(404));",
+                  "pm.test('code INGREDIENT_NOT_FOUND', () => json.error && json.error.code === 'INGREDIENT_NOT_FOUND');"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"missing ingredient\",\n  \"ingredients\": [\n    {\n      \"name\": \"ghost ingredient without suggestion {{seed_run_id}}\",\n      \"amount\": 100\n    }\n  ]\n}\n" },
+            "url": "{{base_url}}/api/v1/recipe/analyze"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Recipe - Add To Diary",
+      "item": [
+        {
+          "name": "POST /api/v1/recipe/add-to-diary - exact recipe -> 200",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "const chicken = pm.collectionVariables.get('recipe_chicken_name');",
+                  "const rice = pm.collectionVariables.get('recipe_rice_name');",
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('source recipe', () => json.source === 'recipe');",
+                  "pm.test('name meal', () => json.name === 'meal');",
+                  "pm.test('amount 300', () => pm.expect(json.amount_g).to.be.closeTo(300, 0.000001));",
+                  "pm.test('ingredients saved', () => Array.isArray(json.ingredients) && json.ingredients.includes(chicken) && json.ingredients.includes(rice));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"meal\",\n  \"ingredients\": [\n    {\n      \"name\": \"{{recipe_chicken_name}}\",\n      \"amount\": 200\n    },\n    {\n      \"name\": \"{{recipe_rice_name}}\",\n      \"amount\": 100\n    }\n  ]\n}\n" },
+            "url": "{{base_url}}/api/v1/recipe/add-to-diary"
+          }
+        },
+        {
+          "name": "POST /api/v1/recipe/add-to-diary - ingredient not found -> 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "pm.test('status 400', () => pm.response.to.have.status(400));",
+                  "pm.test('code INGREDIENT_NOT_FOUND', () => json.error && json.error.code === 'INGREDIENT_NOT_FOUND');",
+                  "pm.test('message Ingredient not found', () => json.error && json.error.message === 'Ingredient not found');"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"bad recipe\",\n  \"ingredients\": [\n    {\n      \"name\": \"ghost ingredient {{seed_run_id}}\",\n      \"amount\": 100\n    }\n  ]\n}\n" },
+            "url": "{{base_url}}/api/v1/recipe/add-to-diary"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,657 @@
+{
+  "info": {
+    "name": "back API - Auth/Profile/Onboarding QA",
+    "_postman_id": "fb424e77-3a2a-47f4-8d8a-qa-auth-profile-onboarding",
+    "description": "QA collection for auth, profile, and onboarding flows. Use with back/qa/postman_auth_profile_onboarding_environment.json.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth - Register",
+      "item": [
+        {
+          "name": "TC-AUTH-REG-001 Valid register",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/api/v1/auth/register",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{register_email}}\",\n  \"password\": \"{{test_password}}\",\n  \"confirm_password\": \"{{test_password}}\"\n}"
+            },
+            "description": "Expected: 201 Created, status=verification_sent"
+          }
+        },
+        {
+          "name": "TC-AUTH-REG-002 Register with subdomain email",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/api/v1/auth/register",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{subdomain_email}}\",\n  \"password\": \"{{test_password}}\",\n  \"confirm_password\": \"{{test_password}}\"\n}"
+            }
+          }
+        },
+        {
+          "name": "TC-AUTH-REG-003 Duplicate email",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/api/v1/auth/register",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{duplicate_email}}\",\n  \"password\": \"{{test_password}}\",\n  \"confirm_password\": \"{{test_password}}\"\n}"
+            },
+            "description": "Precondition: register duplicate_email once before running this negative case. Expected: 400."
+          }
+        },
+        {
+          "name": "TC-AUTH-REG-004 Password confirmation mismatch",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/api/v1/auth/register",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"qa.mismatch@example.com\",\n  \"password\": \"{{test_password}}\",\n  \"confirm_password\": \"{{wrong_password}}\"\n}"
+            }
+          }
+        },
+        {
+          "name": "TC-AUTH-REG-005 Invalid email",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/api/v1/auth/register",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"abc\",\n  \"password\": \"{{test_password}}\",\n  \"confirm_password\": \"{{test_password}}\"\n}"
+            }
+          }
+        },
+        {
+          "name": "TC-AUTH-REG-006 Empty fields",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/api/v1/auth/register",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"\",\n  \"password\": \"\",\n  \"confirm_password\": \"\"\n}"
+            }
+          }
+        },
+        {
+          "name": "TC-AUTH-REG-007 Very long email",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/api/v1/auth/register",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa@example.com\",\n  \"password\": \"{{test_password}}\",\n  \"confirm_password\": \"{{test_password}}\"\n}"
+            }
+          }
+        },
+        {
+          "name": "TC-AUTH-REG-008 Password min boundary pass",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/api/v1/auth/register",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"qa.min@example.com\",\n  \"password\": \"{{password_min}}\",\n  \"confirm_password\": \"{{password_min}}\"\n}"
+            }
+          }
+        },
+        {
+          "name": "TC-AUTH-REG-009 Password with special chars",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/api/v1/auth/register",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"qa.special@example.com\",\n  \"password\": \"{{password_special}}\",\n  \"confirm_password\": \"{{password_special}}\"\n}"
+            }
+          }
+        },
+        {
+          "name": "TC-AUTH-REG-010 Password too short",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/api/v1/auth/register",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"qa.short@example.com\",\n  \"password\": \"{{password_too_short}}\",\n  \"confirm_password\": \"{{password_too_short}}\"\n}"
+            }
+          }
+        },
+        {
+          "name": "TC-AUTH-REG-011 Password too long",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/api/v1/auth/register",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"qa.toolong@example.com\",\n  \"password\": \"{{password_too_long}}\",\n  \"confirm_password\": \"{{password_too_long}}\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Auth - Verify / Login / Login With Code",
+      "item": [
+        {
+          "name": "TC-AUTH-VER-001 Verify email with correct code",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/api/v1/auth/verify-email",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{register_email}}\",\n  \"code\": \"{{verify_code}}\"\n}"
+            },
+            "description": "Paste the real email verification code into {{verify_code}}."
+          }
+        },
+        {
+          "name": "TC-AUTH-VER-002 Verify email with wrong code",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/api/v1/auth/verify-email",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{register_email}}\",\n  \"code\": \"{{wrong_code}}\"\n}"
+            }
+          }
+        },
+        {
+          "name": "TC-AUTH-VER-003 Verify email with expired code",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/api/v1/auth/verify-email",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{register_email}}\",\n  \"code\": \"{{expired_code}}\"\n}"
+            },
+            "description": "Manual setup: use a genuinely expired code if available."
+          }
+        },
+        {
+          "name": "TC-AUTH-VER-004 Verify unregistered email",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/api/v1/auth/verify-email",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{unknown_email}}\",\n  \"code\": \"{{verify_code}}\"\n}"
+            }
+          }
+        },
+        {
+          "name": "TC-AUTH-VER-005 Re-verify already verified email",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/api/v1/auth/verify-email",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{verified_email}}\",\n  \"code\": \"{{verify_code}}\"\n}"
+            },
+            "description": "Precondition: verified_email is already verified. Current backend behavior is idempotent."
+          }
+        },
+        {
+          "name": "TC-AUTH-LOGIN-001 Login with valid email/password",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                  "var json = pm.response.json();",
+                  "pm.environment.set('access_token', json.access_token || '');",
+                  "pm.environment.set('refresh_token', json.refresh_token || '');"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/api/v1/auth/login",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{verified_email}}\",\n  \"password\": \"{{test_password}}\"\n}"
+            }
+          }
+        },
+        {
+          "name": "TC-AUTH-LOGIN-002 Login with wrong password",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/api/v1/auth/login",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{verified_email}}\",\n  \"password\": \"{{wrong_password}}\"\n}"
+            }
+          }
+        },
+        {
+          "name": "TC-AUTH-LOGIN-003 Login with unknown email",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/api/v1/auth/login",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{unknown_email}}\",\n  \"password\": \"{{test_password}}\"\n}"
+            }
+          }
+        },
+        {
+          "name": "TC-AUTH-LOGIN-004 Login with unverified email",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/api/v1/auth/login",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{unverified_email}}\",\n  \"password\": \"{{test_password}}\"\n}"
+            }
+          }
+        },
+        {
+          "name": "TC-AUTH-CODE-001 Send login code",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/api/v1/auth/send-login-code",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{verified_email}}\"\n}"
+            }
+          }
+        },
+        {
+          "name": "TC-AUTH-CODE-002 Login with correct code",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                  "var json = pm.response.json();",
+                  "pm.environment.set('access_token', json.access_token || '');",
+                  "pm.environment.set('refresh_token', json.refresh_token || '');"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/api/v1/auth/login-with-code",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{verified_email}}\",\n  \"code\": \"{{verify_code}}\"\n}"
+            }
+          }
+        },
+        {
+          "name": "TC-AUTH-CODE-003 Login with wrong code",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/api/v1/auth/login-with-code",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{verified_email}}\",\n  \"code\": \"{{wrong_code}}\"\n}"
+            }
+          }
+        },
+        {
+          "name": "TC-AUTH-CODE-004 Login with expired code",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/api/v1/auth/login-with-code",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{verified_email}}\",\n  \"code\": \"{{expired_code}}\"\n}"
+            }
+          }
+        },
+        {
+          "name": "TC-AUTH-CODE-005 Reuse same code twice",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/api/v1/auth/login-with-code",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{verified_email}}\",\n  \"code\": \"{{verify_code}}\"\n}"
+            },
+            "description": "Run twice. First should pass, second should fail."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Auth - Refresh / Reset / Google / Set Password",
+      "item": [
+        {
+          "name": "TC-AUTH-REFRESH-001 Refresh with valid token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                  "var json = pm.response.json();",
+                  "pm.environment.set('access_token', json.access_token || '');",
+                  "pm.environment.set('refresh_token', json.refresh_token || '');"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/api/v1/auth/refresh",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refresh_token\": \"{{refresh_token}}\"\n}"
+            }
+          }
+        },
+        {
+          "name": "TC-AUTH-REFRESH-002 Refresh with invalid token",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/api/v1/auth/refresh",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refresh_token\": \"not-a-token\"\n}"
+            }
+          }
+        },
+        {
+          "name": "TC-AUTH-REFRESH-003 Refresh with expired token",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/api/v1/auth/refresh",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refresh_token\": \"{{expired_refresh_token}}\"\n}"
+            },
+            "description": "Set expired_refresh_token manually if you want to validate this case against a real expired token."
+          }
+        },
+        {
+          "name": "TC-AUTH-REFRESH-004 Reuse same refresh token",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/api/v1/auth/refresh",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refresh_token\": \"{{refresh_token}}\"\n}"
+            },
+            "description": "Current backend behavior allows reuse until token expiry."
+          }
+        },
+        {
+          "name": "TC-AUTH-RESET-001 Send password reset code",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/api/v1/auth/send-password-reset-code",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{verified_email}}\"\n}"
+            }
+          }
+        },
+        {
+          "name": "TC-AUTH-RESET-002 Reset password with code",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                  "var json = pm.response.json();",
+                  "pm.environment.set('access_token', json.access_token || '');",
+                  "pm.environment.set('refresh_token', json.refresh_token || '');"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/api/v1/auth/reset-password",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{verified_email}}\",\n  \"code\": \"{{verify_code}}\",\n  \"password\": \"{{password_special}}\",\n  \"confirm_password\": \"{{password_special}}\"\n}"
+            }
+          }
+        },
+        {
+          "name": "TC-AUTH-GOOGLE-001 Google login with valid token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                  "var json = pm.response.json();",
+                  "pm.environment.set('access_token', json.access_token || '');",
+                  "pm.environment.set('refresh_token', json.refresh_token || '');"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/api/v1/auth/google",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id_token\": \"{{google_id_token}}\"\n}"
+            },
+            "description": "Manual: use a real Google ID token."
+          }
+        },
+        {
+          "name": "TC-AUTH-GOOGLE-002 Google login with invalid token",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/api/v1/auth/google",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id_token\": \"{{invalid_google_id_token}}\"\n}"
+            }
+          }
+        },
+        {
+          "name": "TC-AUTH-SETPWD-001 Set password with auth",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
+            "url": "{{base_url}}/api/v1/auth/set-password",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"password\": \"{{test_password}}\",\n  \"confirm_password\": \"{{test_password}}\"\n}"
+            }
+          }
+        },
+        {
+          "name": "TC-AUTH-SETPWD-002 Set password mismatch",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
+            "url": "{{base_url}}/api/v1/auth/set-password",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"password\": \"{{test_password}}\",\n  \"confirm_password\": \"{{wrong_password}}\"\n}"
+            }
+          }
+        },
+        {
+          "name": "TC-AUTH-SETPWD-003 Set password without auth",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/api/v1/auth/set-password",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"password\": \"{{test_password}}\",\n  \"confirm_password\": \"{{test_password}}\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Profile / Onboarding",
+      "item": [
+        {
+          "name": "TC-PROFILE-GET-001 Get profile",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{access_token}}" }],
+            "url": "{{base_url}}/api/v1/profile"
+          }
+        },
+        {
+          "name": "TC-PROFILE-PUT-001 Put valid profile",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
+            "url": "{{base_url}}/api/v1/profile",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"age\": 28,\n  \"gender\": \"female\",\n  \"height_cm\": 168,\n  \"weight_kg\": 60,\n  \"activity_level\": \"moderate\",\n  \"nutrition_goal\": \"healthy_eating\",\n  \"allergies\": [\"milk\"],\n  \"custom_allergies\": [],\n  \"intolerances\": [\"lactose\"],\n  \"diet_type\": \"vegetarian\",\n  \"religious_restriction\": \"none\"\n}"
+            }
+          }
+        },
+        {
+          "name": "TC-PROFILE-PUT-002 Partial update",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
+            "url": "{{base_url}}/api/v1/profile",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"weight_kg\": 58,\n  \"custom_allergies\": [\"honey\"]\n}"
+            }
+          }
+        },
+        {
+          "name": "TC-PROFILE-PUT-003 Invalid gender",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
+            "url": "{{base_url}}/api/v1/profile",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"age\": 28,\n  \"gender\": \"abc\",\n  \"height_cm\": 168,\n  \"weight_kg\": 60,\n  \"activity_level\": \"moderate\",\n  \"nutrition_goal\": \"healthy_eating\",\n  \"allergies\": [],\n  \"custom_allergies\": [],\n  \"intolerances\": [],\n  \"diet_type\": \"none\",\n  \"religious_restriction\": \"none\"\n}"
+            }
+          }
+        },
+        {
+          "name": "TC-PROFILE-PUT-004 Empty body",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
+            "url": "{{base_url}}/api/v1/profile",
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            }
+          }
+        },
+        {
+          "name": "TC-PROFILE-PUT-005 Large height",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
+            "url": "{{base_url}}/api/v1/profile",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"age\": 28,\n  \"gender\": \"female\",\n  \"height_cm\": 999,\n  \"weight_kg\": 60,\n  \"activity_level\": \"moderate\",\n  \"nutrition_goal\": \"healthy_eating\",\n  \"allergies\": [],\n  \"custom_allergies\": [],\n  \"intolerances\": [],\n  \"diet_type\": \"none\",\n  \"religious_restriction\": \"none\"\n}"
+            },
+            "description": "Current backend behavior allows large positive values."
+          }
+        },
+        {
+          "name": "TC-PROFILE-RESET-001 Reset profile",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{access_token}}" }],
+            "url": "{{base_url}}/api/v1/profile/reset"
+          }
+        },
+        {
+          "name": "TC-ONBOARDING-001 Get onboarding status",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{access_token}}" }],
+            "url": "{{base_url}}/api/v1/onboarding/status"
+          }
+        },
+        {
+          "name": "TC-ONBOARDING-002 Get onboarding options",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/v1/onboarding/options"
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    { "key": "base_url", "value": "http://localhost:8080" }
+  ]
+}

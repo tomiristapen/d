@@ -1,0 +1,1150 @@
+openapi: 3.0.3
+info:
+  title: Nutri API
+  version: 1.0.0
+  description: Swagger documentation for the Nutri backend API.
+servers:
+  - url: /api/v1
+tags:
+  - name: Health
+  - name: Auth
+  - name: User
+  - name: Profile
+  - name: Ingredient
+  - name: Product
+  - name: Manual
+  - name: Recipe
+  - name: Diary
+  - name: Onboarding
+paths:
+  /healthz:
+    get:
+      tags: [Health]
+      summary: Health check
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+  /auth/register:
+    post:
+      tags: [Auth]
+      summary: Register user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthRegisterRequest'
+      responses:
+        '201':
+          description: Verification email/code sent
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusResponse'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+  /auth/send-verification-code:
+    post:
+      tags: [Auth]
+      summary: Send verification code
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SendVerificationCodeRequest'
+      responses:
+        '200':
+          description: Verification sent
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusResponse'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+  /auth/verify-email:
+    post:
+      tags: [Auth]
+      summary: Verify email by code
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerifyEmailRequest'
+      responses:
+        '200':
+          description: Email verified
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusResponse'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+  /auth/login:
+    post:
+      tags: [Auth]
+      summary: Login with email and password
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Auth tokens
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+  /auth/send-login-code:
+    post:
+      tags: [Auth]
+      summary: Send one-time login code to email
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SendVerificationCodeRequest'
+      responses:
+        '200':
+          description: Login code sent
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusResponse'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+  /auth/send-password-reset-code:
+    post:
+      tags: [Auth]
+      summary: Send password reset code to email
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SendVerificationCodeRequest'
+      responses:
+        '200':
+          description: Password reset code sent
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusResponse'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+  /auth/login-with-code:
+    post:
+      tags: [Auth]
+      summary: Login with email and one-time code
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginWithCodeRequest'
+      responses:
+        '200':
+          description: Auth tokens
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+  /auth/reset-password:
+    post:
+      tags: [Auth]
+      summary: Reset password with email code
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResetPasswordRequest'
+      responses:
+        '200':
+          description: Password reset and authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+  /auth/google:
+    post:
+      tags: [Auth]
+      summary: Login with Google ID token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GoogleLoginRequest'
+      responses:
+        '200':
+          description: Auth tokens
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+  /auth/refresh:
+    post:
+      tags: [Auth]
+      summary: Refresh auth tokens
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefreshRequest'
+      responses:
+        '200':
+          description: Refreshed tokens
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+  /auth/set-password:
+    post:
+      tags: [Auth]
+      summary: Set password for the current authenticated user
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetPasswordRequest'
+      responses:
+        '200':
+          description: Password stored
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusResponse'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+  /user:
+    delete:
+      tags: [User]
+      summary: Delete current user
+      security:
+        - BearerAuth: []
+      responses:
+        '204':
+          description: User deleted
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+  /profile:
+    get:
+      tags: [Profile]
+      summary: Get current profile
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Current profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfileResponse'
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+    put:
+      tags: [Profile]
+      summary: Update current profile
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProfileUpdateRequest'
+      responses:
+        '200':
+          description: Updated profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfileResponse'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+  /profile/reset:
+    post:
+      tags: [Profile]
+      summary: Reset current profile
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Profile reset
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusResponse'
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+  /onboarding/options:
+    get:
+      tags: [Onboarding]
+      summary: Get backend-supported onboarding and profile options
+      responses:
+        '200':
+          description: Backend-supported option catalog
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OnboardingOptionsResponse'
+  /ingredients/autocomplete:
+    get:
+      tags: [Ingredient]
+      summary: Ingredient autocomplete
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: query
+          name: q
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Ingredient suggestions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AutocompleteResponse'
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+  /products/{barcode}:
+    get:
+      tags: [Product]
+      summary: Get product by barcode
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: barcode
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Product found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '502':
+          $ref: '#/components/responses/ErrorResponse'
+        '504':
+          $ref: '#/components/responses/ErrorResponse'
+  /products/ocr/draft:
+    post:
+      tags: [Product]
+      summary: Build OCR draft
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OCRDraftRequest'
+      responses:
+        '200':
+          description: OCR draft
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OCRDraftDTO'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '502':
+          $ref: '#/components/responses/ErrorResponse'
+  /manual/analyze:
+    post:
+      tags: [Manual]
+      summary: Analyze manual product input
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ManualAnalyzeRequest'
+      responses:
+        '200':
+          description: Exact match or fuzzy suggestions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ManualAnalyzeResponse'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+  /manual/custom:
+    post:
+      tags: [Manual]
+      summary: Create custom manual product
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ManualCustomRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ManualCustomResponse'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+  /recipe/analyze:
+    post:
+      tags: [Recipe]
+      summary: Analyze recipe
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecipeAnalyzeRequest'
+      responses:
+        '200':
+          description: Aggregated recipe nutrients
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecipeAnalyzeResponse'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+  /manual/add-to-diary:
+    post:
+      tags: [Diary]
+      summary: Analyze manual product and save to diary
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ManualAnalyzeRequest'
+      responses:
+        '200':
+          description: Diary entry saved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DiaryEntry'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '502':
+          $ref: '#/components/responses/ErrorResponse'
+  /recipe/add-to-diary:
+    post:
+      tags: [Diary]
+      summary: Analyze recipe and save to diary
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecipeAnalyzeRequest'
+      responses:
+        '200':
+          description: Diary entry saved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DiaryEntry'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '502':
+          $ref: '#/components/responses/ErrorResponse'
+  /onboarding/status:
+    get:
+      tags: [Onboarding]
+      summary: Get onboarding status
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Onboarding status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OnboardingStatusResponse'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  responses:
+    ErrorResponse:
+      description: API error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  schemas:
+    HealthResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: ok
+      required: [status]
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: INVALID_NAME
+            message:
+              type: string
+              example: Invalid name
+          required: [code, message]
+      required: [error]
+    StatusResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: verification_sent
+      required: [status]
+    AuthRegisterRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+        confirm_password:
+          type: string
+      required: [email, password, confirm_password]
+    SendVerificationCodeRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+      required: [email]
+    VerifyEmailRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        code:
+          type: string
+      required: [email, code]
+    LoginWithCodeRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        code:
+          type: string
+      required: [email, code]
+    LoginRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+      required: [email, password]
+    GoogleLoginRequest:
+      type: object
+      properties:
+        id_token:
+          type: string
+      required: [id_token]
+    RefreshRequest:
+      type: object
+      properties:
+        refresh_token:
+          type: string
+      required: [refresh_token]
+    SetPasswordRequest:
+      type: object
+      properties:
+        password:
+          type: string
+        confirm_password:
+          type: string
+      required: [password, confirm_password]
+    ResetPasswordRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        code:
+          type: string
+        password:
+          type: string
+        confirm_password:
+          type: string
+      required: [email, code, password, confirm_password]
+    AuthResponse:
+      type: object
+      properties:
+        access_token:
+          type: string
+        refresh_token:
+          type: string
+        profile_completed:
+          type: boolean
+        has_password:
+          type: boolean
+          description: Whether this account already has an email/password login configured.
+      required: [access_token, refresh_token, profile_completed, has_password]
+    ProfileUpdateRequest:
+      type: object
+      description: For the initial profile/onboarding completion all fields are required. Later updates may be partial.
+      properties:
+        age:
+          type: integer
+          minimum: 1
+          maximum: 120
+        gender:
+          type: string
+          enum: [female, male, non_binary, prefer_not_to_say]
+        height_cm:
+          type: integer
+          minimum: 30
+          maximum: 300
+        weight_kg:
+          type: integer
+          minimum: 2
+          maximum: 500
+        activity_level:
+          type: string
+          enum: [low, moderate, high]
+        nutrition_goal:
+          type: string
+          enum: [lose_weight, maintain_weight, gain_weight, healthy_eating]
+        allergies:
+          type: array
+          items:
+            type: string
+          description: Canonical allergy keys chosen from backend-supported values. Custom values should go to custom_allergies.
+        custom_allergies:
+          type: array
+          items:
+            type: string
+        intolerances:
+          type: array
+          items:
+            type: string
+            enum: [lactose, gluten]
+        diet_type:
+          type: string
+          enum: [none, vegetarian, vegan, pescatarian]
+        religious_restriction:
+          type: string
+          enum: [none, halal, kosher]
+    ProfileResponse:
+      type: object
+      properties:
+        user_id:
+          type: string
+        age:
+          type: integer
+          minimum: 1
+          maximum: 120
+        gender:
+          type: string
+          enum: [female, male, non_binary, prefer_not_to_say]
+        height_cm:
+          type: integer
+          minimum: 30
+          maximum: 300
+        weight_kg:
+          type: integer
+          minimum: 2
+          maximum: 500
+        activity_level:
+          type: string
+          enum: [low, moderate, high]
+        nutrition_goal:
+          type: string
+          enum: [lose_weight, maintain_weight, gain_weight, healthy_eating]
+        allergies:
+          type: array
+          items:
+            type: string
+        custom_allergies:
+          type: array
+          items:
+            type: string
+        intolerances:
+          type: array
+          items:
+            type: string
+            enum: [lactose, gluten]
+        diet_type:
+          type: string
+          enum: [none, vegetarian, vegan, pescatarian]
+        religious_restriction:
+          type: string
+          enum: [none, halal, kosher]
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+        - user_id
+        - age
+        - gender
+        - height_cm
+        - weight_kg
+        - activity_level
+        - nutrition_goal
+        - allergies
+        - custom_allergies
+        - intolerances
+        - diet_type
+        - religious_restriction
+        - created_at
+        - updated_at
+    AutocompleteResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            type: string
+      required: [items]
+    Product:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        barcode:
+          type: string
+        name:
+          type: string
+        brand:
+          type: string
+        ingredients:
+          type: array
+          items:
+            type: string
+        calories:
+          type: number
+        protein:
+          type: number
+        fat:
+          type: number
+        carbohydrates:
+          type: number
+        confidenceScore:
+          type: number
+        source:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+        - id
+        - barcode
+        - name
+        - brand
+        - ingredients
+        - calories
+        - protein
+        - fat
+        - carbohydrates
+        - confidenceScore
+        - source
+        - created_at
+        - updated_at
+    OCRDraftRequest:
+      type: object
+      description: Provide either `images` for multi-photo OCR or `image` as a single-image alias. Values are base64-encoded image bytes.
+      properties:
+        images:
+          type: array
+          items:
+            type: string
+        image:
+          type: string
+        lang:
+          type: string
+        region:
+          type: string
+    OCRIngredientDTO:
+      type: object
+      properties:
+        clientId:
+          type: string
+        raw:
+          type: string
+        name:
+          type: string
+        matchedProductId:
+          type: integer
+          format: int64
+        matchName:
+          type: string
+        matchScore:
+          type: number
+        confidence:
+          type: number
+        isVerified:
+          type: boolean
+      required:
+        - clientId
+        - raw
+        - name
+        - matchScore
+        - confidence
+        - isVerified
+    OCRNutritionFieldDTO:
+      type: object
+      properties:
+        value:
+          type: number
+          nullable: true
+        confidence:
+          type: number
+        isEstimated:
+          type: boolean
+        isVerified:
+          type: boolean
+      required:
+        - confidence
+        - isEstimated
+        - isVerified
+    OCRNutritionDTO:
+      type: object
+      properties:
+        energyUnit:
+          type: string
+          enum: ["", kcal, kJ]
+        massUnit:
+          type: string
+          enum: ["", g]
+        calories:
+          $ref: '#/components/schemas/OCRNutritionFieldDTO'
+        protein:
+          $ref: '#/components/schemas/OCRNutritionFieldDTO'
+        fat:
+          $ref: '#/components/schemas/OCRNutritionFieldDTO'
+        carbs:
+          $ref: '#/components/schemas/OCRNutritionFieldDTO'
+      required: [energyUnit, massUnit, calories, protein, fat, carbs]
+    OCRConflictDTO:
+      type: object
+      properties:
+        field:
+          type: string
+        note:
+          type: string
+      required: [field, note]
+    OCRDraftDTO:
+      type: object
+      properties:
+        ocrMode:
+          type: string
+        ocrQuality:
+          type: number
+        overallConfidence:
+          type: number
+        ingredients:
+          type: array
+          items:
+            $ref: '#/components/schemas/OCRIngredientDTO'
+        nutrition:
+          $ref: '#/components/schemas/OCRNutritionDTO'
+        missingFields:
+          type: array
+          items:
+            type: string
+        conflicts:
+          type: array
+          items:
+            $ref: '#/components/schemas/OCRConflictDTO'
+      required:
+        - ocrMode
+        - ocrQuality
+        - overallConfidence
+        - ingredients
+        - nutrition
+        - missingFields
+    ManualAnalyzeRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        amount:
+          type: number
+      required: [name, amount]
+    ProductResult:
+      type: object
+      properties:
+        name:
+          type: string
+        calories:
+          type: number
+        protein:
+          type: number
+        fat:
+          type: number
+        carbs:
+          type: number
+      required: [name, calories, protein, fat, carbs]
+    ManualAnalyzeResponse:
+      type: object
+      properties:
+        product:
+          allOf:
+            - $ref: '#/components/schemas/ProductResult'
+          nullable: true
+        suggestions:
+          type: array
+          items:
+            type: string
+        confidence:
+          type: number
+          nullable: true
+      required: [product, suggestions, confidence]
+    ManualCustomRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        calories:
+          type: number
+        protein:
+          type: number
+        fat:
+          type: number
+        carbs:
+          type: number
+      required: [name, calories, protein, fat, carbs]
+    ManualCustomResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: created
+      required: [status]
+    RecipeIngredientInput:
+      type: object
+      properties:
+        name:
+          type: string
+        amount:
+          type: number
+      required: [name, amount]
+    ResolvedIngredient:
+      type: object
+      properties:
+        name:
+          type: string
+        amount:
+          type: number
+        calories:
+          type: number
+        protein:
+          type: number
+        fat:
+          type: number
+        carbs:
+          type: number
+      required: [name, amount, calories, protein, fat, carbs]
+    RecipeAnalyzeRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        ingredients:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecipeIngredientInput'
+      required: [ingredients]
+    RecipeAnalyzeResponse:
+      type: object
+      properties:
+        product:
+          $ref: '#/components/schemas/ProductResult'
+        ingredients:
+          type: array
+          items:
+            $ref: '#/components/schemas/ResolvedIngredient'
+        confidence:
+          type: number
+      required: [product, ingredients, confidence]
+    DiaryEntry:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        user_id:
+          type: string
+        source:
+          type: string
+        name:
+          type: string
+        amount_g:
+          type: number
+        calories:
+          type: number
+        protein:
+          type: number
+        fat:
+          type: number
+        carbs:
+          type: number
+        ingredients:
+          type: array
+          items:
+            type: string
+        created_at:
+          type: string
+          format: date-time
+      required:
+        - id
+        - user_id
+        - source
+        - name
+        - amount_g
+        - calories
+        - protein
+        - fat
+        - carbs
+        - ingredients
+        - created_at
+    OnboardingStatusResponse:
+      type: object
+      properties:
+        profile_completed:
+          type: boolean
+      required: [profile_completed]
+    SelectOption:
+      type: object
+      properties:
+        key:
+          type: string
+        label:
+          type: string
+      required: [key, label]
+    OnboardingOptionsResponse:
+      type: object
+      properties:
+        genders:
+          type: array
+          items:
+            $ref: '#/components/schemas/SelectOption'
+        activity_levels:
+          type: array
+          items:
+            $ref: '#/components/schemas/SelectOption'
+        nutrition_goals:
+          type: array
+          items:
+            $ref: '#/components/schemas/SelectOption'
+        allergies:
+          type: array
+          items:
+            $ref: '#/components/schemas/SelectOption'
+        intolerances:
+          type: array
+          items:
+            $ref: '#/components/schemas/SelectOption'
+        diet_types:
+          type: array
+          items:
+            $ref: '#/components/schemas/SelectOption'
+        religious_restrictions:
+          type: array
+          items:
+            $ref: '#/components/schemas/SelectOption'
+      required:
+        - genders
+        - activity_levels
+        - nutrition_goals
+        - allergies
+        - intolerances
+        - diet_types
+        - religious_restrictions
